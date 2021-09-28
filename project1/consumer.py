@@ -21,13 +21,15 @@ import couchdb
 
 # acquire the consumer
 # (you will need to change this to your bootstrap server's IP addr)
-consumer = KafkaConsumer (bootstrap_servers=["129.114.25.146:9092","129.114.26.34:9092"], api_version=(2,8,0))
+#consumer = KafkaConsumer (bootstrap_servers=["129.114.25.146:9092","129.114.26.34:9092"], api_version=(2,8,0))
+consumer = KafkaConsumer (bootstrap_servers=["34.207.182.122:9092", "54.144.52.166:9092"], api_version=(2,8,0))
 
 # subscribe to topic
-consumer.subscribe (topics=["utilizations"])
+consumer.subscribe (topics=["utilizations", "beef", "chocolate", "chicken"])
 
 #Set up database
-couchserver = couchdb.Server('https://admin:team12@129.114.26.34:5984/')
+#couchserver = couchdb.Server('https://admin:team12@129.114.26.34:5984/')
+couchserver = couchdb.Server('https://admin:team12@54.144.52.166:5984/')
 dbname = "kafka-consumer"
 
 if dbname in couchserver:
@@ -50,9 +52,8 @@ for msg in consumer:
     # Note that I am not showing code to obtain the incoming data as JSON
     # nor am I showing any code to connect to a backend database sink to
     # dump the incoming data. You will have to do that for the assignment.
-    print (str(msg.value, 'ascii'))
-    db.save({str(tracker) : msg.value})
-    tracker++
+    #print (str(msg.value, 'ascii'))
+    db.save(msg)
 
 # we are done. As such, we are not going to get here as the above loop
 # is a forever loop.
