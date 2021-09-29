@@ -22,7 +22,7 @@ import couchdb
 # acquire the consumer
 # (you will need to change this to your bootstrap server's IP addr)
 #consumer = KafkaConsumer (bootstrap_servers=["129.114.25.146:9092","129.114.26.34:9092"], api_version=(2,8,0))
-consumer = KafkaConsumer (bootstrap_servers=["34.207.182.122:9092", "54.144.52.166:9092"], api_version=(2,8,0))
+consumer = KafkaConsumer (bootstrap_servers=["34.207.182.122:9092", "54.144.52.166:9092"], api_version=(2,8,0), ,   value_deserializer=lambda m: json.loads(m.decode('utf-8'))))
 
 # subscribe to topic
 consumer.subscribe (topics=["utilizations", "beef", "chocolate", "chicken"])
@@ -53,7 +53,7 @@ for msg in consumer:
     # nor am I showing any code to connect to a backend database sink to
     # dump the incoming data. You will have to do that for the assignment.
     #print (str(msg.value, 'ascii'))
-    db.save(msg)
+    db.save(msg.value)
 
 # we are done. As such, we are not going to get here as the above loop
 # is a forever loop.
