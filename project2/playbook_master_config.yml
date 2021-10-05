@@ -18,16 +18,35 @@
 #####################################################
 - name: "Play 1: Perform fact gathering on all VMs"
   hosts: MyLocalVMs          # specified in the MyInventory file
-  remote_user:  ubuntu      # note that the user is ubuntu for 
+  remote_user:  vagrant      # note that the user is ubuntu for 
                              # vagrant-created VM else use the
                              # appropriate user name
 
   gather_facts: yes          # We ask Ansible to collect all facts
-  become_user: no            # No need for sudo as we are not installing anything
+  become_user: yes            # No need for sudo as we are not installing anything
 
   tasks:    # the task to be performed (here I am showing the effect of include_)
-  - include_tasks: tasks/playbook_get_facts_local_vm.yml
-  - include_tasks: tasks/playbook_get_facts_cloud_vm.yml
+  - import_tasks: tasks/playbook_get_facts_local_vm.yml
 
+#####################################################
+### Play 1: Get facts from all our VMs
+#
+# Here I show the use of import_tasks from child playbooks
+#####################################################
+- name: "Play 2: Perform fact gathering on all VMs"
+  hosts: MyLocalVMs          # specified in the MyInventory file
+  remote_user: vagrant       # note that the user is vagrant for the
+                             # vagrant-created VM else use the
+                             # appropriate user name
+
+  tasks:                     # the task to be performed
+  - name: Install Java SDK
+    apt: name=openjdk-8-jre state=latest
+                     # above we install latest svn using apt package mgr
+    become: yes     # run with "sudo" privileges
+  - name: Install Pip
+    apt: name=python3-pip state=latest
+                     # above we install latest svn using apt package mgr
+    become: yes     # run with "sudo" privileges
 ...
 
