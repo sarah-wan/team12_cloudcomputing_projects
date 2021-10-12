@@ -1,0 +1,5 @@
+ - name: Copy consumer code to VM
+    copy:
+        src: ../project1/consumer.py   # here you can give absolute path also.
+        dest: /home/cc/    # destination directory into which this file will get copied.
+                                      # if you want to name it differently, give the file name also.

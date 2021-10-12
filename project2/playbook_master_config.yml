@@ -34,7 +34,7 @@
 #
 # Here I show the use of import_tasks from child playbooks
 #####################################################
-- name: "Play 2: Create VMs in the cloud and set up software"
+- name: "Play 2: Create VMs in the cloud"
   hosts: MyLocalVMs          # specified in the MyInventory file
   remote_user:  vagrant      # note that the user is ubuntu for 
                              # vagrant-created VM else use the
@@ -45,6 +45,25 @@
 
   tasks:    # the task to be performed (here I am showing the effect of include_)
   - import_tasks: tasks/playbook_create_VM_in_cloud.yml
+
+
+#####################################################
+### Play 3: Do Cloud Setup
+#
+# Here I show the use of import_tasks from child playbooks
+#####################################################
+- name: "Play 3: Setup Kafka and other software in Cloud"
+  hosts: MyChameleonVMs      # specified in the MyInventory file
+  remote_user:  cc           # note that the user is ubuntu for 
+                             # vagrant-created VM else use the
+                             # appropriate user name
+
+  gather_facts: yes          # We ask Ansible to collect all facts
+  become_user: yes            # No need for sudo as we are not installing anything
+
+  tasks:    # the task to be performed (here I am showing the effect of include_)
+  - import_tasks: tasks/playbook_install_apps_on_cloud.yml
+  - import_tasks: tasks/playbook_move_files_to_cloud.yml
 
 ...
 
