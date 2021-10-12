@@ -1,0 +1,35 @@
+- name: Create VM2 in Chameleon cloud and attaches floating IP address
+  openstack.cloud.server:
+    state: present
+    name: team12_ansibleVM2
+    cloud: openstack
+    key_name: team12-ssh
+    timeout: 200
+    flavor: m1.small
+    image: 	CC-Ubuntu20.04
+    network: CH-819381-net
+    security_groups:
+      - ENABLE_SSH
+      - ENABLE_KAFKA_COUCHDB
+    floating_ips:
+      - 129.114.25.146
+
+
+- name: Create VM3 in Chameleon cloud and attaches floating IP address
+  openstack.cloud.server:
+    state: present
+    name: team12_ansibleVM3
+    cloud: openstack
+    key_name: team12-ssh
+    timeout: 200
+    flavor: m1.small
+    image: 	CC-Ubuntu20.04
+    network: CH-819381-net
+    security_groups:
+      - ENABLE_SSH
+      - ENABLE_KAFKA_COUCHDB
+    floating_ips:
+      - 129.114.26.34
+    
+...
+

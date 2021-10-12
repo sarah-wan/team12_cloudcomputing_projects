@@ -9,19 +9,17 @@
 # In this playbook, we will show how to install a package via
 # the aptitude module
 #
-- hosts: MyLocalVMs          # specified in the MyInventory file
-  remote_user: vagrant       # note that the user is vagrant for the
-                             # vagrant-created VM else use the
-                             # appropriate user name
+- name: Install Pip
+  apt:
+    name: python3-pip
+    
+- name: Install openstacksdk
+  pip:
+    name: openstacksdk
 
-  tasks:                     # the task to be performed
-  - name: Install Java SDK
-    apt: name=openjdk-8-jre state=latest
-                     # above we install latest svn using apt package mgr
-    become: yes     # run with "sudo" privileges
-  - name: Install Pip
-    apt: name=python3-pip state=latest
-                     # above we install latest svn using apt package mgr
-    become: yes     # run with "sudo" privileges
+- name: Install kafka-python
+  pip:
+    name: kafka-python
+
 ...
 

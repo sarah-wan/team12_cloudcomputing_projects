@@ -11,12 +11,30 @@
 #
 # This file is similar to the one in the AnsibleOnly_Local_and_Cloud folder
 # For now I just kept one play in here but feel free to add more.
+
 #####################################################
-### Play 1: Get facts from all our VMs
+### Play 1: Install Software + Packages on Vagrant VM
 #
 # Here I show the use of import_tasks from child playbooks
 #####################################################
-- name: "Play 1: Perform fact gathering on all VMs"
+- name: "Play 1: Install Software + Packages on Vagrant VM"
+  hosts: MyLocalVMs          # specified in the MyInventory file
+  remote_user: vagrant       # note that the user is vagrant for the
+                             # vagrant-created VM else use the
+                             # appropriate user name
+
+  gather_facts: yes          # We ask Ansible to collect all facts
+  become_user: yes            # No need for sudo as we are not installing anything
+
+  tasks:                     # the task to be performed
+  - import_tasks: tasks/playbook_install_app_on_local_vm.yml
+
+#####################################################
+### Play 2: Create VMs in the Cloud
+#
+# Here I show the use of import_tasks from child playbooks
+#####################################################
+- name: "Play 2: Create VMs in the cloud and set up software"
   hosts: MyLocalVMs          # specified in the MyInventory file
   remote_user:  vagrant      # note that the user is ubuntu for 
                              # vagrant-created VM else use the
@@ -26,27 +44,7 @@
   become_user: yes            # No need for sudo as we are not installing anything
 
   tasks:    # the task to be performed (here I am showing the effect of include_)
-  - import_tasks: tasks/playbook_get_facts_local_vm.yml
+  - import_tasks: tasks/playbook_create_VM_in_cloud.yml
 
-#####################################################
-### Play 1: Get facts from all our VMs
-#
-# Here I show the use of import_tasks from child playbooks
-#####################################################
-- name: "Play 2: Perform fact gathering on all VMs"
-  hosts: MyLocalVMs          # specified in the MyInventory file
-  remote_user: vagrant       # note that the user is vagrant for the
-                             # vagrant-created VM else use the
-                             # appropriate user name
-
-  tasks:                     # the task to be performed
-  - name: Install Java SDK
-    apt: name=openjdk-8-jre state=latest
-                     # above we install latest svn using apt package mgr
-    become: yes     # run with "sudo" privileges
-  - name: Install Pip
-    apt: name=python3-pip state=latest
-                     # above we install latest svn using apt package mgr
-    become: yes     # run with "sudo" privileges
 ...
 
