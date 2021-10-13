@@ -42,10 +42,10 @@
 
 
 # run consumer code on vm2
-- hosts: MyCC2
+- hosts: MyCC3
   remote_user:  cc  
   become: true 
 
   tasks:
-  - name: run consumer code on VM2
+  - name: run consumer code on VM3
     command: python3 /home/cc/consumer.py
