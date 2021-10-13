@@ -1,0 +1,52 @@
+# clear log + start db 
+- hosts: MyLocalVMs
+  remote_user:  vagrant  
+  become: true 
+
+  tasks:
+  - name: Clear Logs
+    command: rm -fr /tmp/zookeeper/ /tmp/kafka*
+
+  - name: start Couchdb
+    command: service start couchdb 
+
+
+# run zookeeper + kafka on vm2
+- hosts: MyCC2
+  remote_user:  cc  
+  become: true 
+
+  tasks:
+  - name: Run Zookeeper on VM2
+    command: bin/zookeeper-server-start.sh config/zookeeper.properties  # run zookeeper vm2
+    
+  - name: Run Kafka on VM2
+    command: bin/kafka-server-start.sh config/server.properties # run kafka on vm2
+ 
+# run zookeeper + kafka on vm3
+- hosts: MyCC3
+  remote_user:  cc  
+  become: true 
+
+  tasks:
+  - name: Run Kafka on VM3
+    command: bin/kafka-server-start.sh config/server.properties # run kafka on vm3
+
+# run consumer code on vm2
+- hosts: MyCC2
+  remote_user:  cc  
+  become: true 
+
+  tasks:
+  - name: run consumer code on VM2
+    command: python3 consumer.py #may need to change depending on path
+
+
+# run producer code 
+- hosts: MyLocalVMs
+  remote_user:  vagrant  
+  become: true 
+
+  tasks:
+  - name: Run producer code
+    command: python3 producer.py

@@ -52,18 +52,25 @@
 #
 # Here I show the use of import_tasks from child playbooks
 #####################################################
-- name: "Play 3: Setup Kafka and other software in Cloud"
-  hosts: MyChameleonVMs      # specified in the MyInventory file
-  remote_user:  cc           # note that the user is ubuntu for 
-                             # vagrant-created VM else use the
-                             # appropriate user name
+# - name: "Play 3: Setup Kafka and other software in Cloud"
+#   hosts: MyChameleonVMs      # specified in the MyInventory file
+#   remote_user:  cc           # note that the user is ubuntu for 
+#                              # vagrant-created VM else use the
+#                              # appropriate user name
 
-  gather_facts: yes          # We ask Ansible to collect all facts
-  become_user: yes            # No need for sudo as we are not installing anything
+#   gather_facts: yes          # We ask Ansible to collect all facts
+#   become_user: yes            # No need for sudo as we are not installing anything
 
-  tasks:    # the task to be performed (here I am showing the effect of include_)
-  - import_tasks: tasks/playbook_install_apps_on_cloud.yml
-  - import_tasks: tasks/playbook_move_files_to_cloud.yml
+#   tasks:    # the task to be performed (here I am showing the effect of include_)
+- import_playbook: tasks/playbook_install_apps_on_cloud.yml
+- import_playbook: tasks/playbook_move_files_to_cloud.yml
 
+#####################################################
+### Play 4: Edit Kafka files and start brokers
+#
+# Here I show the use of import_tasks from child playbooks
+#####################################################
+- import_playbook: tasks/playbook_edit_kafka_config.yml
+- import_playbook: tasks/run-kafka.yml
 ...
 

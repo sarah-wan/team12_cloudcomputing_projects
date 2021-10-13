@@ -1,5 +1,9 @@
- - name: Copy consumer code to VM
-    copy:
-        src: ../project1/consumer.py   # here you can give absolute path also.
-        dest: /home/cc/    # destination directory into which this file will get copied.
-                                      # if you want to name it differently, give the file name also.
+- hosts: MyCC3     # specified in the MyInventory file
+  remote_user:  cc           # note that the user is ubuntu for 
+                             # vagrant-created VM else use the
+                             # appropriate user name- 
+  tasks:
+  - name: Move consumer.py to VM
+    ansible.builtin.copy:
+      src: ../../project1/consumer.py
+      dest: /home/cc

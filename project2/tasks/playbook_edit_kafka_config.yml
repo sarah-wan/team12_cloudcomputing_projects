@@ -1,0 +1,55 @@
+- hosts: MyCC2          # specified in the MyInventory file
+  remote_user: cc      # note that the user is ubuntu for the
+                             # vagrant-created VM else use the
+                             # appropriate user name
+
+  tasks:
+    - name: Add broker id to VM2
+      ansible.builtin.lineinfile:
+        path: /home/cc/kafka_2.13-3.0.0/config/server.properties
+        regexp: '^broker.id='
+        line: broker.id=0
+
+    - name: Add listners to VM2
+      ansible.builtin.lineinfile:
+        path: /home/cc/kafka_2.13-3.0.0/config/server.properties
+        line: listeners=PLAINTEXT://:9092
+
+    - name: Add autocreate topic
+      ansible.builtin.lineinfile:
+        path: /home/cc/kafka_2.13-3.0.0/config/server.properties
+        line: auto.create.topics.enable=true
+
+    - name: Change zookeeper
+      ansible.builtin.lineinfile:
+        path: /home/cc/kafka_2.13-3.0.0/config/server.properties
+        regexp: '^zookeeper.connect='
+        line: zookeeper.connect=129.114.25.146:2181
+
+- hosts: MyCC3          # specified in the MyInventory file
+  remote_user: cc      # note that the user is ubuntu for the
+                             # vagrant-created VM else use the
+                             # appropriate user name
+
+  tasks:
+    - name: Add broker id to VM3
+      ansible.builtin.lineinfile:
+        path: /home/cc/kafka_2.13-3.0.0/config/server.properties
+        regexp: '^broker.id='
+        line: broker.id = 1
+
+    - name: Add listners to VM3
+      ansible.builtin.lineinfile:
+        path: /home/cc/kafka_2.13-3.0.0/config/server.properties
+        line: listeners=PLAINTEXT://:9092
+
+    - name: Add autocreate topic
+      ansible.builtin.lineinfile:
+        path: /home/cc/kafka_2.13-3.0.0/config/server.properties
+        line: auto.create.topics.enable=true
+    
+    - name: Change zookeeper
+      ansible.builtin.lineinfile:
+        path: /home/cc/kafka_2.13-3.0.0/config/server.properties
+        regexp: '^zookeeper.connect='
+        line: zookeeper.connect=129.114.25.146:2181
