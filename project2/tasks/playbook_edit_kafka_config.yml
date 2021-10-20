@@ -13,6 +13,7 @@
     - name: Add listners to VM2
       ansible.builtin.lineinfile:
         path: /home/cc/kafka_2.13-3.0.0/config/server.properties
+        regexp: '^.listeners='
         line: listeners=PLAINTEXT://:9092
 
     - name: Add autocreate topic
@@ -20,10 +21,16 @@
         path: /home/cc/kafka_2.13-3.0.0/config/server.properties
         line: auto.create.topics.enable=true
   
-    - name: Add advertise hostname
+    - name: Add advertise listeners
       ansible.builtin.lineinfile:
         path: /home/cc/kafka_2.13-3.0.0/config/server.properties
-        line: advertised.host.name=129.114.25.146
+        regexp: '^.advertised.listeners='
+        line: advertised.listeners=PLAINTEXT://129.114.25.146:9092
+
+    - name: Add advertise listeners
+      ansible.builtin.lineinfile:
+        path: /home/cc/kafka_2.13-3.0.0/config/server.properties
+        line: listener.security.protocol.map=PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL
 
     - name: Change zookeeper
       ansible.builtin.lineinfile:
@@ -46,17 +53,24 @@
     - name: Add listeners to VM3
       ansible.builtin.lineinfile:
         path: /home/cc/kafka_2.13-3.0.0/config/server.properties
+        regexp: '^.listeners='
         line: listeners=PLAINTEXT://:9092
 
     - name: Add autocreate topic
       ansible.builtin.lineinfile:
         path: /home/cc/kafka_2.13-3.0.0/config/server.properties
         line: auto.create.topics.enable=true
-    
-    - name: Add advertise hostname
+
+    - name: Add advertise listeners
       ansible.builtin.lineinfile:
         path: /home/cc/kafka_2.13-3.0.0/config/server.properties
-        line: advertised.host.name=129.114.26.34
+        regexp: '^.advertised.listeners='
+        line: advertised.listeners=PLAINTEXT://129.114.26.34:9092
+
+    - name: Add advertise listeners
+      ansible.builtin.lineinfile:
+        path: /home/cc/kafka_2.13-3.0.0/config/server.properties
+        line: listener.security.protocol.map=PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL
     
     - name: Change zookeeper
       ansible.builtin.lineinfile:
