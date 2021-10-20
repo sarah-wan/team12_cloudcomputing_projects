@@ -1,0 +1,11 @@
+- name: Allow all access to tcp port 5984 (couchdb)
+  community.general.ufw:
+    rule: allow
+    port: 5984
+    proto: tcp
+
+- name: Allow all access to tcp port 9092 (kafka)
+  community.general.ufw:
+    rule: allow
+    port: 9092 
+    proto: tcp

@@ -1,0 +1,49 @@
+- name: "Play: Install CouchDB"
+  hosts: MyCC3
+  remote_user:  cc
+  gather_facts: no
+  become: yes
+  tasks:
+  - name: Update and upgrade apt packages
+    apt:
+      upgrade: yes
+      update_cache: yes
+    become: yes
+  - name: Install dependencies for couchdb
+    apt:
+      pkg:
+      - curl
+      - apt-transport-https
+      - gnupg
+  - name: Add a key
+    ansible.builtin.apt_key:
+      url: https://couchdb.apache.org/repo/keys.asc
+      state: present
+      keyring: /usr/share/keyrings/couchdb-archive-keyring.gpg
+
+  - name: Sign couchdb package repository
+    ansible.builtin.shell: |
+      echo "deb [signed-by=/usr/share/keyrings/couchdb-archive-keyring.gpg] https://apache.jfrog.io/artifactory/couchdb-deb/ focal main" \
+        | sudo tee /etc/apt/sources.list.d/couchdb.list >/dev/null
+    become: yes
+
+  - name: Install couchDB with apt
+    apt:
+      name: couchdb
+
+  - name: Add admin user
+    ansible.builtin.lineinfile:
+        path: /opt/couchdb/etc/local.ini
+        insertafter: '^\[admins\]'
+        line: admin = team12
+
+  - name: Change bind address
+    ansible.builtin.lineinfile:
+      path: /opt/couchdb/etc/local.ini
+      insertafter: '^\[chttpd\]'
+      line: bind_address = 0.0.0.0
+  
+  - name: Restart Couchdb service
+    ansible.builtin.service:
+      name: couchdb
+      state: restarted

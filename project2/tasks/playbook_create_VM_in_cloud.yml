@@ -13,6 +13,7 @@
       - ENABLE_KAFKA_COUCHDB
     floating_ips:
       - 129.114.25.146
+    timeout: 600
 
 
 - name: Create VM3 in Chameleon cloud and attaches floating IP address
@@ -30,6 +31,7 @@
       - ENABLE_KAFKA_COUCHDB
     floating_ips:
       - 129.114.26.34
+    timeout: 600
     
 ...
 

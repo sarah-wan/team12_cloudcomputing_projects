@@ -1,4 +1,4 @@
-- hosts: MyCC3     # specified in the MyInventory file
+- hosts: MyCC2     # specified in the MyInventory file
   remote_user:  cc           # note that the user is ubuntu for 
                              # vagrant-created VM else use the
                              # appropriate user name- 

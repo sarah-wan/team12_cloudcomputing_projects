@@ -87,6 +87,9 @@ Vagrant.configure("2") do |config|
   # let's also copy our ansible.cfg, MyInventory and cloud.yaml file
   config.vm.provision "file", source: "./team12_cloudcomputing_projects/project2/.ansible.cfg", destination: "~/.ansible.cfg"
   config.vm.provision "file", source: "./team12_cloudcomputing_projects/project2/MyInventory", destination: "~/.ansible/MyInventory"
+  config.vm.provision "file", source: "./team12_cloudcomputing_projects/project2/cloud.yml", destination: "~/.config/openstack"
+  config.vm.provision "file", source: "./team12_cloudcomputing_projects/project1", destination: "~/~/home/vagrant"
+  config.vm.provision "file", source: "./team12_cloudcomputing_projects/project2/playbook_cleanup.yml", destination: "~/home/vagrant"
 
   # make sure the permissions on the  pem file are not too open.
   # Note, here I show you using inline and privileged: false so the inline
@@ -120,5 +123,6 @@ Vagrant.configure("2") do |config|
     ansible.install = true
     ansible.limit = "all"
     ansible.inventory_path = "./team12_cloudcomputing_projects/project2/MyInventory"
+    ansible.start_at_task = "start here"
   end
 end 

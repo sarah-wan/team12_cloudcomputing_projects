@@ -21,5 +21,9 @@
   pip:
     name: kafka-python
 
+- name: Install JSON package
+  pip:
+    name: pymongo
+
 ...
 

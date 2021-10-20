@@ -1,4 +1,5 @@
-- hosts: MyChameleonVMs      # specified in the MyInventory file
+- name: Install Kafka and packages to run Kafka
+  hosts: MyChameleonVMs      # specified in the MyInventory file
   remote_user:  cc           # note that the user is ubuntu for 
                              # vagrant-created VM else use the
                              # appropriate user name
@@ -31,14 +32,24 @@
     become: yes
     become_user: root
 
-- hosts: MyCC2
+- name: Install additional pip packages to run consumer code
+  hosts: MyCC3
   remote_user: cc
   become_user: yes
 
   tasks:
-  - name: Install kafka-python
+  - name: Install kafka-python module
     pip:
       name: kafka-python
+  
+  - name: Install couchdb python mod
+    pip:
+      name: couchdb
+
+  - name: Install JSON python mod
+    pip:
+      name: pymongo
+
 
 
 

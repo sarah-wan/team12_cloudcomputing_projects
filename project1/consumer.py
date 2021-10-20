@@ -28,8 +28,8 @@ consumer = KafkaConsumer (bootstrap_servers=["34.207.182.122:9092", "54.144.52.1
 consumer.subscribe (topics=["utilizations", "beef", "chocolate", "chicken"])
 
 #Set up database
-#couchserver = couchdb.Server('https://admin:team12@129.114.26.34:5984/')
-couchserver = couchdb.Server('https://admin:team12@54.144.52.166:5984/')
+couchserver = couchdb.Server('http://admin:team12@129.114.26.34:5984/')
+#couchserver = couchdb.Server('https://admin:team12@54.144.52.166:5984/')
 dbname = "kafka-consumer"
 
 if dbname in couchserver:
@@ -58,10 +58,3 @@ for msg in consumer:
 # we are done. As such, we are not going to get here as the above loop
 # is a forever loop.
 consumer.close ()
-    
-
-
-
-
-
-

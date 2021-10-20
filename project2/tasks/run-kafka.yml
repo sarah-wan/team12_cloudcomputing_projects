@@ -22,7 +22,7 @@
     async: 1000
     poll: 0 #might need to adjust path
 
-# run zookeeper + kafka on vm3
+# run kafka + couchdb on vm3
 - hosts: MyCC3
   remote_user:  cc  
 
@@ -31,21 +31,23 @@
     command: /home/cc/kafka_2.13-3.0.0/bin/kafka-server-start.sh /home/cc/kafka_2.13-3.0.0/config/server.properties # run kafka on vm3
     async: 1000
     poll: 0 #might need to adjust path
-     
-# - hosts: MyChameleonVMs
-#   remote_user: cc 
-#   ##NOT VAGRANT should be cc
-#   become: true 
-
-#   - name: start Couchdb
-#     command: service start couchdb 
+  
+  - name: restart couchdb
+    become: yes
+    service:
+      name: couchdb
+      state: restarted
 
 
-# run consumer code on vm2
-- hosts: MyCC3
+#run consumer code on vm2
+- hosts: MyCC2
   remote_user:  cc  
   become: true 
 
   tasks:
   - name: run consumer code on VM3
     command: python3 /home/cc/consumer.py
+    async: 1000
+    poll: 0
+
+
