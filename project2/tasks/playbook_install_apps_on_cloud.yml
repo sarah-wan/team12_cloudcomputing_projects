@@ -5,7 +5,6 @@
                              # appropriate user name
 
   gather_facts: yes          # We ask Ansible to collect all facts
-  become_user: yes            # No need for sudo as we are not installing anything
 
   tasks:    # the task to be performed (here I am showing the effect of include_)
   - name: Install Kafka
@@ -24,18 +23,16 @@
       upgrade: yes
       update_cache: yes
     become: yes
-    become_user: root
 
   - name: Install Java
     apt: 
       name: default-jre
     become: yes
-    become_user: root
 
 - name: Install additional pip packages to run consumer code
   hosts: MyCC3
   remote_user: cc
-  become_user: yes
+  become: yes
 
   tasks:
   - name: Install kafka-python module
