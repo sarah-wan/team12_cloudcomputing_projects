@@ -19,12 +19,17 @@
       ansible.builtin.lineinfile:
         path: /home/cc/kafka_2.13-3.0.0/config/server.properties
         line: auto.create.topics.enable=true
+  
+    - name: Add advertise hostname
+      ansible.builtin.lineinfile:
+        path: /home/cc/kafka_2.13-3.0.0/config/server.properties
+        line: advertised.host.name=129.114.25.146
 
     - name: Change zookeeper
       ansible.builtin.lineinfile:
         path: /home/cc/kafka_2.13-3.0.0/config/server.properties
         regexp: '^zookeeper.connect='
-        line: zookeeper.connect=129.114.25.146:2181
+        line: zookeeper.connect=localhost:2181
 
 - hosts: MyCC3          # specified in the MyInventory file
   remote_user: cc      # note that the user is ubuntu for the
@@ -38,7 +43,7 @@
         regexp: '^broker.id='
         line: broker.id = 1
 
-    - name: Add listners to VM3
+    - name: Add listeners to VM3
       ansible.builtin.lineinfile:
         path: /home/cc/kafka_2.13-3.0.0/config/server.properties
         line: listeners=PLAINTEXT://:9092
@@ -47,6 +52,11 @@
       ansible.builtin.lineinfile:
         path: /home/cc/kafka_2.13-3.0.0/config/server.properties
         line: auto.create.topics.enable=true
+    
+    - name: Add advertise hostname
+      ansible.builtin.lineinfile:
+        path: /home/cc/kafka_2.13-3.0.0/config/server.properties
+        line: advertised.host.name=129.114.26.34
     
     - name: Change zookeeper
       ansible.builtin.lineinfile:

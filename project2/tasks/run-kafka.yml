@@ -42,9 +42,10 @@
 #run consumer code on vm2
 - hosts: MyCC2
   remote_user:  cc  
-  become: true 
 
   tasks:
+  # - name: Execute script
+  #   command: /home/cc/consumer.py
   - name: run consumer code on VM3
     command: python3 /home/cc/consumer.py
     async: 1000

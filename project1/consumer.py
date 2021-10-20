@@ -21,8 +21,8 @@ import json
 
 # acquire the consumer
 # (you will need to change this to your bootstrap server's IP addr)
-#consumer = KafkaConsumer (bootstrap_servers=["129.114.25.146:9092","129.114.26.34:9092"], api_version=(2,8,0))
-consumer = KafkaConsumer (bootstrap_servers=["34.207.182.122:9092", "54.144.52.166:9092"], api_version=(2,8,0), ,   value_deserializer=lambda m: json.loads(m.decode('utf-8'))))
+consumer = KafkaConsumer (bootstrap_servers=["129.114.25.146:9092","129.114.26.34:9092"], api_version=(2,8,0), value_deserializer=lambda m: json.loads(m.decode('utf-8')))
+#consumer = KafkaConsumer (bootstrap_servers=["34.207.182.122:9092", "54.144.52.166:9092"], api_version=(2,8,0), ,   value_deserializer=lambda m: json.loads(m.decode('utf-8'))))
 
 # subscribe to topic
 consumer.subscribe (topics=["utilizations", "beef", "chocolate", "chicken"])
@@ -36,8 +36,6 @@ if dbname in couchserver:
     db = couchserver[dbname]
 else:
     db = couchserver.create(dbname)
-
-int tracker = 0
 
 # we keep reading and printing
 for msg in consumer:
