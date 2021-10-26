@@ -75,4 +75,15 @@
     async: 1000
     poll: 0
 
+- hosts: MyCC2
+  remote_user:  cc  
+
+  tasks:
+  # - name: Execute script
+  #   command: /home/cc/consumer.py
+  - name: run consumer code on VM3
+    command: python3 /home/cc/consumer.py
+    async: 1000
+    poll: 0
+
 

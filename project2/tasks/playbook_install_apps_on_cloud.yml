@@ -4,11 +4,11 @@
                              # vagrant-created VM else use the
                              # appropriate user name
 
-  gather_facts: yes          # We ask Ansible to collect all facts
+  gather_facts: no          # We ask Ansible to collect all facts
 
   tasks:    # the task to be performed (here I am showing the effect of include_)
   - name: Install Kafka
-    get_url:
+    ansible.builtin.get_url:
       url: https://dlcdn.apache.org/kafka/3.0.0/kafka_2.13-3.0.0.tgz
       dest: /home/cc
 
@@ -17,6 +17,9 @@
       src: /home/cc/kafka_2.13-3.0.0.tgz
       dest: /home/cc
       remote_src: yes
+  - name: Pause for a min for ssh
+    pause:
+      minutes: 1
 
   - name: Update and upgrade apt packages
     apt:
@@ -30,7 +33,7 @@
     become: yes
 
 - name: Install additional pip packages to run consumer code
-  hosts: MyCC3
+  hosts: MyCC2
   remote_user: cc
   become: yes
 

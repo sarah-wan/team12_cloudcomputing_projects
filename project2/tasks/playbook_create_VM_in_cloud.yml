@@ -32,6 +32,10 @@
     floating_ips:
       - 129.114.26.34
     timeout: 600
+- name: Pause for a min for ssh
+  pause:
+    minutes: 2
+
     
 ...
 

@@ -27,9 +27,16 @@
         | sudo tee /etc/apt/sources.list.d/couchdb.list >/dev/null
     become: yes
 
+  - name: Update and upgrade apt packages
+    apt:
+      upgrade: yes
+      update_cache: yes
+    become: yes
+
   - name: Install couchDB with apt
     apt:
       name: couchdb
+    become: yes
 
   - name: Add admin user
     ansible.builtin.lineinfile:
@@ -42,6 +49,12 @@
       path: /opt/couchdb/etc/local.ini
       insertafter: '^\[chttpd\]'
       line: bind_address = 0.0.0.0
+
+  - name: Configure single cluser
+    ansible.builtin.lineinfile:
+        path: /opt/couchdb/etc/local.ini
+        insertafter: '^\[couchdb\]'
+        line: single_node=true
   
   - name: Restart Couchdb service
     ansible.builtin.service:

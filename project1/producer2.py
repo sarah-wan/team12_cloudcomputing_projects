@@ -32,7 +32,7 @@ url_endpoint = "https://api.spoonacular.com/recipes/findByIngredients/?"
 request_parameter = {
     "apiKey": "fb67b807e0ee45a3930e3890b03b647c",
     "ingredients": "beef",
-    "number": 5
+    "number": 15
 }
 
 
@@ -44,8 +44,8 @@ recipes = requests.get(url_endpoint + urlencode(request_parameter)).json()
 
 # acquire the producer
 # (you will need to change this to your bootstrap server's IP addr)
-#producer = KafkaProducer (bootstrap_servers="129.114.25.146:9092", acks=1)  # wait for leader to write to log
-producer = KafkaProducer (bootstrap_servers="34.207.182.122:9092", acks=1)
+producer = KafkaProducer (bootstrap_servers="129.114.25.146:9092", acks=1)  # wait for leader to write to log
+#producer = KafkaProducer (bootstrap_servers="34.207.182.122:9092", acks=1)
 
 for recipe in recipes:
 
