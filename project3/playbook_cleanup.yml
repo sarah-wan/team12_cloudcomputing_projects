@@ -1,0 +1,15 @@
+- hosts: MyLocalVMs
+  remote_user: vagrant
+  become_user: yes
+
+  tasks:
+  - name: remove an instance
+    openstack.cloud.server:
+      name: team12_ansibleVM3
+      state: absent
+      cloud: openstack
+  - name: remove an instance
+    openstack.cloud.server:
+      name: team12_ansibleVM2
+      state: absent
+      cloud: openstack

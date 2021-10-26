@@ -1,0 +1,55 @@
+- name: Install Kafka and packages to run Kafka
+  hosts: MyChameleonVMs      # specified in the MyInventory file
+  remote_user:  cc           # note that the user is ubuntu for 
+                             # vagrant-created VM else use the
+                             # appropriate user name
+
+  gather_facts: no          # We ask Ansible to collect all facts
+
+  tasks:    # the task to be performed (here I am showing the effect of include_)
+  - name: Install Kafka
+    ansible.builtin.get_url:
+      url: https://dlcdn.apache.org/kafka/3.0.0/kafka_2.13-3.0.0.tgz
+      dest: /home/cc
+
+  - name: Unarchive Kafka on the remote machine
+    ansible.builtin.unarchive:
+      src: /home/cc/kafka_2.13-3.0.0.tgz
+      dest: /home/cc
+      remote_src: yes
+  - name: Pause for a min for ssh
+    pause:
+      minutes: 1
+
+  - name: Update and upgrade apt packages
+    apt:
+      upgrade: yes
+      update_cache: yes
+    become: yes
+
+  - name: Install Java
+    apt: 
+      name: default-jre
+    become: yes
+
+- name: Install additional pip packages to run consumer code
+  hosts: MyCC2
+  remote_user: cc
+  become: yes
+
+  tasks:
+  - name: Install kafka-python module
+    pip:
+      name: kafka-python
+  
+  - name: Install couchdb python mod
+    pip:
+      name: couchdb
+
+  - name: Install JSON python mod
+    pip:
+      name: pymongo
+
+
+
+

@@ -1,0 +1,9 @@
+- hosts: MyChameleonVMs     # specified in the MyInventory file
+  remote_user:  cc           # note that the user is ubuntu for 
+                             # vagrant-created VM else use the
+                             # appropriate user name- 
+  tasks:
+  - name: Move consumer.py to VM
+    ansible.builtin.copy:
+      src: ../../project3/SampleScaffolding
+      dest: /home/cc

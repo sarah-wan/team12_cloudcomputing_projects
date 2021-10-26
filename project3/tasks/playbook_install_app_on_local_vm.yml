@@ -1,0 +1,29 @@
+---
+#
+# EECS 4287/5287: Principles of Cloud Computing
+# Author: Aniruddha Gokhale
+# Created: Fall 2016
+# Modified: Fall 2018
+# Modified: Fall 2020
+#
+# In this playbook, we will show how to install a package via
+# the aptitude module
+#
+- name: Install Pip
+  apt:
+    name: python3-pip
+    
+- name: Install openstacksdk
+  pip:
+    name: openstacksdk
+
+- name: Install kafka-python
+  pip:
+    name: kafka-python
+
+- name: Install JSON package
+  pip:
+    name: pymongo
+
+...
+

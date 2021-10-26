@@ -1,0 +1,26 @@
+- hosts: MyCC2          # specified in the MyInventory file
+  remote_user: cc      # note that the user is ubuntu for the
+                             # vagrant-created VM else use the
+                             # appropriate user name
+
+  tasks:
+  - name: Add alias
+    ansible.builtin.lineinfile:
+      path: /home/cc/kafka_2.13-3.0.0/config/server.properties
+      line: 129.114.25.146 team12_ansiblevm2 kubemaster kubeworker1
+  - name: install json processor
+    apt:
+      name: jq
+    become: yes
+
+- hosts: MyCC3          # specified in the MyInventory file
+  remote_user: cc      # note that the user is ubuntu for the
+                             # vagrant-created VM else use the
+                             # appropriate user name
+
+  tasks:
+  - name: Add alias on VM3
+    ansible.builtin.lineinfile:
+      path: /home/cc/kafka_2.13-3.0.0/config/server.properties
+      line: 129.114.25.146 team12_ansiblevm3 kubeworker2
+
