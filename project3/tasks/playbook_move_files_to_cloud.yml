@@ -5,5 +5,12 @@
   tasks:
   - name: Move consumer.py to VM
     ansible.builtin.copy:
+      force: yes
       src: ../../project3/SampleScaffolding
+      dest: /home/cc
+
+  - name: Move consumer.py to VM
+    ansible.builtin.copy:
+      force: yes
+      src: ../kub_docker
       dest: /home/cc

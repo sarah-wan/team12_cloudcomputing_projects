@@ -1,11 +1,67 @@
-- name: Restart Docker
-  systemd:
-    name: docker
-    daemon_reload: yes
-    state: restarted
+- name: "Play 4: Start Kubernetes + Docker"
+  hosts: MyChameleonVMs
+  remote_user: cc
+  become: true
+  tasks:
+  - name: Restart Docker
+    systemd:
+      name: docker
+      daemon_reload: yes
+      state: restarted
 
-- name: Restart kubelet
-  service:
-    name: kubelet
-    daemon_reload: yes
-    state: restarted
+  - name: Restart kubelet
+    service:
+      name: kubelet
+      daemon_reload: yes
+      state: restarted
+
+- name: "Play 5: Set up master node"
+  hosts: MyCC2
+  remote_user: cc
+  become: true
+  tasks:
+  - name: Reset the Kubernetes cluster
+    command: kubeadm reset -f
+
+  - name: Initialize the Kubernetes cluster using kubeadm
+    command: kubeadm init --node-name kubemaster --pod-network-cidr=10.244.0.0/16
+
+  - name: Setup kubeconfig for user to access kubernetes cluser
+    command: "{{ item }}"
+    with_items:
+     - mkdir -p /home/cc/.kube
+     - cp /etc/kubernetes/admin.conf /home/cc/.kube/config
+
+  - name: Setup kubeconfig for user to access kubernetes cluser
+    command: chown cc:docker /home/cc/.kube/config
+
+  - name: Setup flannel
+    become: false
+    command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+  
+  - name: Generate join command
+    become: false
+    command: kubeadm token create --print-join-command
+    register: join_command
+
+  - name: Copy join command to local file
+    local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="/home/vagrant/join-command"
+  
+  - name: taint master node
+    become: false 
+    command: kubectl taint nodes kubemaster node-role.kubernetes.io/master:NoSchedule-
+
+
+- name: "Play 5: Set up worker node"
+  hosts: MyCC3
+  remote_user: cc
+  become: true
+  tasks:
+  - name: reset
+    command: kubeadm reset -f
+
+  - name: Copy the join command to server location
+    copy: src=/home/vagrant/join-command dest=/tmp/join-command.sh mode=0777
+
+  - name: Join the node to cluster
+    command: sh /tmp/join-command.sh

@@ -10,8 +10,7 @@
 
 - name: Add apt repository for stable version
   apt_repository:
-    id: EBFCD88
-    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
     state: present
 
 - name: Install docker and its dependecies
@@ -27,16 +26,26 @@
   notify:
     - docker status
 
-- name: Add vagrant user to docker group
+- name: Add cc user to docker group
   user:
-    name: vagrant
+    name: cc
     group: docker
+
+- name: Create daemon.json file to set docker properties
+  copy:
+    content: ""
+    dest: /etc/docker/daemon.json
+    force: false
 
 - name: Edit docker.service file to use systemd-based cgroup
   ansible.builtin.lineinfile:
-    path: /lib/systemd/system/docker.service
-    regexp: '^.ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock'
-    line: ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock --exec-opt native.cgroupdriver=systemd
+    path: /etc/docker/daemon.json
+    insertafter: '{'
+    line: '{"exec-opts": ["native.cgroupdriver=systemd"]}'
+
+- debug: 
+    var: json.stdout
+
 
 - name: Remove swapfile from /etc/fstab
   mount:

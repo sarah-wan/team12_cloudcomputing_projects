@@ -1,0 +1,78 @@
+- name: Allow all access to tcp port 5984 (couchdb)
+  community.general.ufw:
+    rule: allow
+    port: 5984
+    proto: tcp
+
+- name: Allow all access to tcp port 9092 (kafka)
+  community.general.ufw:
+    rule: allow
+    port: 9092 
+    proto: tcp
+
+- name: Allow all access to tcp port 2379-2380 (ectd server client API)
+  community.general.ufw:
+    rule: allow
+    port: 2379:2380
+    proto: tcp
+
+
+- name: Allow all access to tcp port 10259 (kube-scheduler)
+  community.general.ufw:
+    rule: allow
+    port: 4040
+    proto: tcp
+    
+- name: Allow all access to tcp port 5000 (private-registry)
+  community.general.ufw:
+    rule: allow
+    port: 5000
+    proto: tcp
+
+- name: Allow all access to tcp port 6443 (K8S API server)
+  community.general.ufw:
+    rule: allow
+    port: 6443
+    proto: tcp
+
+- name: Allow all access to tcp port 10259 (kube-scheduler)
+  community.general.ufw:
+    rule: allow
+    port: 7076:7079
+    proto: tcp
+
+- name: Allow all access to tcp port 8080
+  community.general.ufw:
+    rule: allow
+    port: 8080
+    proto: tcp
+
+- name: Allow all access to tcp port 10259 (kube-scheduler)
+  community.general.ufw:
+    rule: allow
+    port: 8001
+    proto: tcp
+
+- name: Allow all access to tcp port 10250 (Kubelet API)
+  community.general.ufw:
+    rule: allow
+    port: 10250:10252 
+    proto: tcp
+
+- name: Allow all access to tcp port 30000-30010
+  community.general.ufw:
+    rule: allow
+    port: 30000:30010
+    proto: tcp
+
+- name: Allow all access to tcp port 10259 (Flanel VXLAN)
+  community.general.ufw:
+    rule: allow
+    port: 8285
+    proto: udp
+
+- name: Allow all access to tcp port 10259 (flannel)
+  community.general.ufw:
+    rule: allow
+    port: 8472
+    proto: udp

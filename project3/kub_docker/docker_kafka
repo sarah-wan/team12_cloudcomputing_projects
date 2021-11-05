@@ -1,0 +1,7 @@
+FROM ubuntu:latest
+
+RUN apt-get -y update && apt-get install -y default-jre curl
+ADD https://dlcdn.apache.org/kafka/3.0.0/kafka_2.13-3.0.0.tgz /kafka.tgz
+RUN mkdir /kafka && tar -xvzf /kafka.tgz -C /kafka --strip-components 1
+
+#CMD /bin/bash
