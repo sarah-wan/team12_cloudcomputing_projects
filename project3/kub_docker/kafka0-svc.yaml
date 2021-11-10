@@ -11,6 +11,6 @@ spec:                     # This is the specification where we can even put the 
   ports:
     - name: broker0-port
       protocol: TCP
-      port: 2181
-      targetPort: 2181
+      port: 9092
+      targetPort: 9092
       nodePort: 30000  

@@ -21,14 +21,14 @@ import json
 
 # acquire the consumer
 # (you will need to change this to your bootstrap server's IP addr)
-consumer = KafkaConsumer (bootstrap_servers=["kafka0-svc:30000"], api_version=(2,8,0), value_deserializer=lambda m: json.loads(m.decode('utf-8')))
+consumer = KafkaConsumer (bootstrap_servers=["129.114.25.146:30000, 129.114.25.146:30001, 129.114.25.146:30002"], api_version=(2,8,0), value_deserializer=lambda m: json.loads(m.decode('utf-8')))
 #consumer = KafkaConsumer (bootstrap_servers=["34.207.182.122:9092", "54.144.52.166:9092"], api_version=(2,8,0), ,   value_deserializer=lambda m: json.loads(m.decode('utf-8'))))
 
 # subscribe to topic
 consumer.subscribe (topics=["utilizations", "beef", "chocolate", "chicken"])
 
 #Set up database
-couchserver = couchdb.Server('http://admin:team12@couchdb-svc:30006/')
+couchserver = couchdb.Server('http://admin:team12@129.114.25.146:30006/')
 #couchserver = couchdb.Server('https://admin:team12@54.144.52.166:5984/')
 dbname = "kafka-consumer"
 

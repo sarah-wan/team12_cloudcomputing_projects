@@ -2,15 +2,15 @@
 apiVersion: v1
 kind: Service         # We are testing the Job resource type
 metadata:
-  name: kafka1-svc  # A name must be given to the Job type in the metadata section
+  name: kafka2-svc  # A name must be given to the Job type in the metadata section
 
 spec:                     # This is the specification where we can even put the number of replicas
   type: NodePort
   selector:
-    app: broker1-app
+    app: broker2-app
   ports:
-    - name: broker1-port
+    - name: broker2-port
       protocol: TCP
       port: 9092
       targetPort: 9092
-      nodePort: 30001 
+      nodePort: 30002  

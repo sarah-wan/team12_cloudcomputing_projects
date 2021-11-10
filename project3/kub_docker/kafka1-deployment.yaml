@@ -21,6 +21,6 @@ spec:                     # This is the specification where we can even put the 
         image: kafka
         imagePullPolicy: Never
         command: ["/bin/sh"]
-        args: ["/kafka/bin/kafka-server-start.sh", "/kafka/config/server.properties", "--override", "broker.id=1", "--override", "listeners=PLAINTEXT://:9091", "--override", "auto.create.topics.enable=true", "--override", "listener.security.protocol.map=PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL", "--override", "advertised.listeners=PLAINTEXT://kafka1-svc:30000", "--override", "zookeeper.connect=zookeeper-svc:zookeeper-port"]
+        args: ["/kafka/bin/kafka-server-start.sh", "/kafka/config/server.properties", "--override", "broker.id=1", "--override", "listeners=PLAINTEXT://:9092", "--override", "auto.create.topics.enable=true", "--override", "listener.security.protocol.map=PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL", "--override", "advertised.listeners=PLAINTEXT://kafka1-svc:30001", "--override", "zookeeper.connect=zookeeper-svc:2181"]
         ports:
         - containerPort: 9092

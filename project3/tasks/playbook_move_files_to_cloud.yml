@@ -3,13 +3,8 @@
                              # vagrant-created VM else use the
                              # appropriate user name- 
   tasks:
-  - name: Move consumer.py to VM
-    ansible.builtin.copy:
-      force: yes
-      src: ../../project3/SampleScaffolding
-      dest: /home/cc
 
-  - name: Move consumer.py to VM
+  - name: Move docker files and k8s deployment to VM
     ansible.builtin.copy:
       force: yes
       src: ../kub_docker

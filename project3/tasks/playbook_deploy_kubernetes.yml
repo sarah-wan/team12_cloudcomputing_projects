@@ -1,0 +1,38 @@
+- name: "Play 4: Build docker images"
+  hosts: MyChameleonVMs 
+  remote_user: cc
+  tasks:
+  - name: Pull couchdb image
+    command: docker pull couchdb
+
+  - name: Build kafka image
+    command: docker build -f /home/cc/kub_docker/docker_kafka -t kafka .
+
+  - name: Build consumer image
+    command: docker build -f /home/cc/kub_docker/docker_consumer -t consumer .
+
+- name: "Play 5: deploy container to k8s"
+  hosts: MyCC2
+  remote_user: cc
+  tasks:
+  - name: Deploy zookeeper svc
+    command: kubectl apply -f /home/cc/kub_docker/zookeeper-svc.yaml
+  - name: Deploy zookeeper
+    command: kubectl apply -f /home/cc/kub_docker/zookeeper-deployment.yaml
+
+  - name: Deploy kafka0 svc
+    command: kubectl apply -f /home/cc/kub_docker/kafka0-svc.yaml
+  - name: Deploy kafka0
+    command: kubectl apply -f /home/cc/kub_docker/kafka0-deployment.yaml
+
+  - name: Deploy kafka1 svc
+    command: kubectl apply -f /home/cc/kub_docker/kafka1-svc.yaml
+  - name: Deploy kafka1
+    command: kubectl apply -f /home/cc/kub_docker/kafka1-deployment.yaml
+  - name: Deploy kafka2 svc
+    command: kubectl apply -f /home/cc/kub_docker/kafka2-svc.yaml
+  - name: Deploy kafka2
+    command: kubectl apply -f /home/cc/kub_docker/kafka2-deployment.yaml
+  
+  - name: Deploy consumer
+    command: kubectl apply -f /home/cc/kub_docker/consumer-deployment.yaml
