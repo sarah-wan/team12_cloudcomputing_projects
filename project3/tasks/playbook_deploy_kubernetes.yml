@@ -29,10 +29,15 @@
     command: kubectl apply -f /home/cc/kub_docker/kafka1-svc.yaml
   - name: Deploy kafka1
     command: kubectl apply -f /home/cc/kub_docker/kafka1-deployment.yaml
-  - name: Deploy kafka2 svc
-    command: kubectl apply -f /home/cc/kub_docker/kafka2-svc.yaml
-  - name: Deploy kafka2
-    command: kubectl apply -f /home/cc/kub_docker/kafka2-deployment.yaml
+  # - name: Deploy kafka2 svc
+  #   command: kubectl apply -f /home/cc/kub_docker/kafka2-svc.yaml
+  # - name: Deploy kafka2
+  #   command: kubectl apply -f /home/cc/kub_docker/kafka2-deployment.yaml
   
   - name: Deploy consumer
     command: kubectl apply -f /home/cc/kub_docker/consumer-deployment.yaml
+
+  - name: Deploy coudchdb
+    command: kubectl apply -f /home/cc/kub_docker/couchdb-deployment.yaml
+  - name: Deploy coudchdb
+    command: kubectl apply -f /home/cc/kub_docker/couchdb-svc.yaml

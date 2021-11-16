@@ -1,83 +1,83 @@
 ---
 
-# EECS 4287/5287: Principles of Cloud Computing
-# Author: Aniruddha Gokhale
-# Created: Fall 2017
-# Modified: Fall 2020
+# # EECS 4287/5287: Principles of Cloud Computing
+# # Author: Aniruddha Gokhale
+# # Created: Fall 2017
+# # Modified: Fall 2020
 
-# This playbook is our demo master file
-# The goal is to show how to have a single master file which then
-# includes multiple plays according to some well-designed choreography
+# # This playbook is our demo master file
+# # The goal is to show how to have a single master file which then
+# # includes multiple plays according to some well-designed choreography
 
-# This file is similar to the one in the AnsibleOnly_Local_and_Cloud folder
-# For now I just kept one play in here but feel free to add more.
+# # This file is similar to the one in the AnsibleOnly_Local_and_Cloud folder
+# # For now I just kept one play in here but feel free to add more.
 
-# ####################################################
-# ## Play 1: Install Software + Packages on Vagrant VM
-#
-# Here I show the use of import_tasks from child playbooks
-#####################################################
-- name: "Play 1: Install Software + Packages on Vagrant VM"
-  hosts: MyLocalVMs          # specified in the MyInventory file
-  remote_user: vagrant       # note that the user is vagrant for the
-                             # vagrant-created VM else use the
-                             # appropriate user name
+# # ####################################################
+# # ## Play 1: Install Software + Packages on Vagrant VM
+# #
+# # Here I show the use of import_tasks from child playbooks
+# #####################################################
+# - name: "Play 1: Install Software + Packages on Vagrant VM"
+#   hosts: MyLocalVMs          # specified in the MyInventory file
+#   remote_user: vagrant       # note that the user is vagrant for the
+#                              # vagrant-created VM else use the
+#                              # appropriate user name
 
-  gather_facts: yes          # We ask Ansible to collect all facts
-  become: yes            # No need for sudo as we are not installing anything
+#   gather_facts: yes          # We ask Ansible to collect all facts
+#   become: yes            # No need for sudo as we are not installing anything
 
-  tasks:                     # the task to be performed
-  - import_tasks: tasks/playbook_install_app_on_local_vm.yml
+#   tasks:                     # the task to be performed
+#   - import_tasks: tasks/playbook_install_app_on_local_vm.yml
 
-#####################################################
-### Play 2: Create VMs in the Cloud
-#
-# Here I show the use of import_tasks from child playbooks
-#####################################################
-- name: "Play 2: Create VMs in the cloud"
-  hosts: MyLocalVMs          # specified in the MyInventory file
-  remote_user: vagrant       # note that the user is ubuntu for 
-                             # vagrant-created VM else use the
-                             # appropriate user name
+# #####################################################
+# ### Play 2: Create VMs in the Cloud
+# #
+# # Here I show the use of import_tasks from child playbooks
+# #####################################################
+# - name: "Play 2: Create VMs in the cloud"
+#   hosts: MyLocalVMs          # specified in the MyInventory file
+#   remote_user: vagrant       # note that the user is ubuntu for 
+#                              # vagrant-created VM else use the
+#                              # appropriate user name
 
-  gather_facts: yes          # We ask Ansible to collect all facts
-  become: yes            # No need for sudo as we are not installing anything
+#   gather_facts: yes          # We ask Ansible to collect all facts
+#   become: yes            # No need for sudo as we are not installing anything
 
-  tasks:    # the task to be performed (here I am showing the effect of include_)
-  - import_tasks: tasks/playbook_create_VM_in_cloud.yml
-
-
-#####################################################
-### Play 3: Install Kubernetes
-#
-#####################################################
-- name: "Play 3: Install Kubernetes"
-  hosts: MyChameleonVMs
-  remote_user: cc
-  become: true
-  tasks:
-  - import_tasks: tasks/playbook_install_prereq_kubernetes.yml
-  - import_tasks: tasks/playbook_install_docker.yml
-  - import_tasks: tasks/playbook_install_kubernetes.yml
-
-#####################################################
-### Play 5: Edit firewall Rules
-#
-# Here I show the use of import_tasks from child playbooks
-#####################################################
-- name: "Play 4: Edit ufw rules"
-  hosts: MyChameleonVMs
-  remote_user: cc
-  gather_facts: no
-  become: yes
-  tasks:
-  - import_tasks: tasks/playbook_edit_firewall_rules_cloud.yml 
+#   tasks:    # the task to be performed (here I am showing the effect of include_)
+#   - import_tasks: tasks/playbook_create_VM_in_cloud.yml
 
 
-- import_playbook: tasks/playbook_setup_hostname_alias.yml
+# #####################################################
+# ### Play 3: Install Kubernetes
+# #
+# #####################################################
+# - name: "Play 3: Install Kubernetes"
+#   hosts: MyChameleonVMs
+#   remote_user: cc
+#   become: true
+#   tasks:
+#   - import_tasks: tasks/playbook_install_prereq_kubernetes.yml
+#   - import_tasks: tasks/playbook_install_docker.yml
+#   - import_tasks: tasks/playbook_install_kubernetes.yml
+
+# #####################################################
+# ### Play 5: Edit firewall Rules
+# #
+# # Here I show the use of import_tasks from child playbooks
+# #####################################################
+# - name: "Play 4: Edit ufw rules"
+#   hosts: MyChameleonVMs
+#   remote_user: cc
+#   gather_facts: no
+#   become: yes
+#   tasks:
+#   - import_tasks: tasks/playbook_edit_firewall_rules_cloud.yml 
+
+
+# - import_playbook: tasks/playbook_setup_hostname_alias.yml
 - import_playbook: tasks/playbook_move_files_to_cloud.yml
 
-- import_playbook: tasks/playbook_start_kubernetes.yml
+# - import_playbook: tasks/playbook_start_kubernetes.yml
 - import_playbook: tasks/playbook_deploy_kubernetes.yml
 
 ...
