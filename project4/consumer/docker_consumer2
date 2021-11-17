@@ -1,0 +1,12 @@
+FROM ubuntu:latest
+
+RUN apt-get -y update && apt-get install -y python3 
+RUN apt-get install -y python3-pip
+RUN python3 -m pip install --upgrade pip
+RUN pip3 install --upgrade kafka-python
+RUN pip3 install --upgrade couchdb 
+RUN pip3 install --upgrade pymongo
+
+COPY consumer/consumer2.py /
+
+#CMD /bin/bash

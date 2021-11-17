@@ -22,7 +22,7 @@ import requests
 
 # acquire the consumer
 # (you will need to change this to your bootstrap server's IP addr)
-consumer = KafkaConsumer (bootstrap_servers=["129.114.25.146:30000", "129.114.25.146:30001"], api_version=(2,8,0), value_deserializer=lambda m: json.loads(m.decode('utf-8')))
+consumer = KafkaConsumer (bootstrap_servers=["129.114.25.146:30000", "129.114.25.146:30001"], api_version=(2,8,0))
 #consumer = KafkaConsumer (bootstrap_servers=["34.207.182.122:9092", "54.144.52.166:9092"], api_version=(2,8,0), ,   value_deserializer=lambda m: json.loads(m.decode('utf-8'))))
 
 # subscribe to topic
@@ -42,7 +42,7 @@ url= 'http://admin:team12@129.114.25.146:30006/kafka-consumer/_bulk_docs'
 headers = {'content-type' : 'application/json'}
 
 for msg in consumer:
-    requests.post(url, data=msg, headers=headers)
+    requests.post(url, data=msg.value, headers=headers)
 # we are done. As such, we are not going to get here as the above loop
 # is a forever loop.
 consumer.close ()

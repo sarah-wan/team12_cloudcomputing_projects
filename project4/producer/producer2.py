@@ -23,7 +23,7 @@ import math
 
 total_rows = 1000000
 num_producers = 2
-batch = 10000
+batch = 1000
 producerNum = 1
 
 # We can make this more sophisticated/elegant but for now it is just
@@ -32,13 +32,13 @@ producerNum = 1
 # acquire the producer
 # (you will need to change this to your bootstrap server's IP addr)
 #producer = KafkaProducer (bootstrap_servers="129.114.25.146:9092", acks=1)  # wait for leader to write to log
-producer = KafkaProducer (bootstrap_servers="129.114.25.146:30000", acks=1)
+producer = KafkaProducer (bootstrap_servers="129.114.25.146:30001", acks=1)
 
 fieldnames = ("id","timestamp","value", "property", "plug_id", "household_id", "house_id")
 
 num_iterations = math.ceil(total_rows/num_producers/batch)
 start = num_iterations * producerNum * batch
-batch = 10
+
 for it in range(num_iterations):
     df = pandas.read_csv('energy.csv', names = ("id","timestamp", "value", "property", "plug_id", "household_id", "house_id"), skiprows=start+(batch*it),nrows=batch)
     myDocs = df.to_dict(orient='records')

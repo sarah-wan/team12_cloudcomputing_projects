@@ -23,7 +23,7 @@ import math
 
 total_rows = 1000000
 num_producers = 2
-batch = 10000
+batch = 1000
 producerNum = 0
 
 # We can make this more sophisticated/elegant but for now it is just
@@ -38,7 +38,7 @@ fieldnames = ("id","timestamp","value", "property", "plug_id", "household_id", "
 
 num_iterations = math.ceil(total_rows/num_producers/batch)
 start = num_iterations * producerNum * batch
-batch = 10
+
 for it in range(num_iterations):
     df = pandas.read_csv('energy.csv', names = ("id","timestamp", "value", "property", "plug_id", "household_id", "house_id"), skiprows=start+(batch*it),nrows=batch)
     myDocs = df.to_dict(orient='records')
