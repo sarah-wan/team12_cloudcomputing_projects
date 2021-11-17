@@ -1,4 +1,4 @@
-#
+
 #
 # Author: Aniruddha Gokhale
 # CS4287-5287: Principles of Cloud Computing, Vanderbilt University
@@ -13,17 +13,18 @@
 #    information into a database OR just keeps displaying the incoming events on the
 #    command line consumer (or consumers)
 #
-
-import os   # need this for popen
-import time # for sleep
+import csv
+import pandas
 from kafka import KafkaProducer  # producer of events
 import requests
 import json
 from bson import json_util
-import path
+import math
 
 total_rows = 1000000
 num_producers = 2
+batch = 10000
+producerNum = 0
 
 # We can make this more sophisticated/elegant but for now it is just
 # hardcoded to the setup I have on my local VMs
@@ -34,24 +35,16 @@ num_producers = 2
 producer = KafkaProducer (bootstrap_servers="129.114.25.146:30000", acks=1)
 
 fieldnames = ("id","timestamp","value", "property", "plug_id", "household_id", "house_id")
-entries = []
 
-with open('../energy.csv') as file:
-    reader=csv.DictReader(file)
-    nextrows=[row for idx, row in enumerate(reader) if idx in (0,100)]
-
-    for row in nextrows:
-        entry = OrderedDict()
-        for field in fieldnames:
-            entry[field] = row[field]
-        entries.append(entry)
-    
-output = {
-    "docs": entries
-}
-    
-producer.send ("chicken", json.dumps(output, default = json_util.default).encode('utf-8'))
-producer.flush ()   # try to empty the sending buffer
+num_iterations = math.ceil(total_rows/num_producers/batch)
+start = num_iterations * producerNum * batch
+batch = 10
+for it in range(num_iterations):
+    df = pandas.read_csv('energy.csv', names = ("id","timestamp", "value", "property", "plug_id", "household_id", "house_id"), skiprows=start+(batch*it),nrows=batch)
+    myDocs = df.to_dict(orient='records')
+    if myDocs != []:
+        producer.send ("energy", json.dumps({'docs': myDocs}).encode('utf-8'))
+        producer.flush ()   # try to empty the sending buffer
 
 # we are done
-producer.close ()
+producer.close ()                

@@ -1,4 +1,4 @@
-#
+
 #
 # Author: Aniruddha Gokhale
 # CS4287-5287: Principles of Cloud Computing, Vanderbilt University
@@ -13,57 +13,38 @@
 #    information into a database OR just keeps displaying the incoming events on the
 #    command line consumer (or consumers)
 #
-
-import os   # need this for popen
-import time # for sleep
+import csv
+import pandas
 from kafka import KafkaProducer  # producer of events
-from urllib.parse import urlencode
 import requests
 import json
 from bson import json_util
+import math
 
-url_endpoint = "https://api.spoonacular.com/recipes/findByIngredients/?"
-
-
-#s = input("Insert ingredients you want to use seperated by a comma: ")
-#ingredients = s.split(",")
-#number = input("Insert number of recipes you want to display: ")
-
-request_parameter = {
-    "apiKey": "fb67b807e0ee45a3930e3890b03b647c",
-    "ingredients": "beef",
-    "number": 15
-}
-
-
-#combine all the information together to access the api
-recipes = requests.get(url_endpoint + urlencode(request_parameter)).json()
+total_rows = 1000000
+num_producers = 2
+batch = 10000
+producerNum = 1
 
 # We can make this more sophisticated/elegant but for now it is just
 # hardcoded to the setup I have on my local VMs
 
 # acquire the producer
 # (you will need to change this to your bootstrap server's IP addr)
-producer = KafkaProducer (bootstrap_servers="129.114.25.146:30000", acks=1)  # wait for leader to write to log
-#producer = KafkaProducer (bootstrap_servers="34.207.182.122:9092", acks=1)
+#producer = KafkaProducer (bootstrap_servers="129.114.25.146:9092", acks=1)  # wait for leader to write to log
+producer = KafkaProducer (bootstrap_servers="129.114.25.146:30000", acks=1)
 
-for recipe in recipes:
+fieldnames = ("id","timestamp","value", "property", "plug_id", "household_id", "house_id")
 
-    
-    recipe["time"] = time.time()
-    # send the contents under topic utilizations. Note that it expects
-    # the contents in bytes so we convert it to bytes.
-    #
-    # Note that here I am not serializing the contents into JSON or anything
-    # as such but just taking the output as received and sending it as bytes
-    # You will need to modify it to send a JSON structure, say something
-    # like <timestamp, contents of top>
-    #
-    producer.send ("beef", json.dumps(recipe, default = json_util.default).encode('utf-8'))
-    producer.flush ()   # try to empty the sending buffer
-
-    # sleep a second
-    time.sleep (1)
+num_iterations = math.ceil(total_rows/num_producers/batch)
+start = num_iterations * producerNum * batch
+batch = 10
+for it in range(num_iterations):
+    df = pandas.read_csv('energy.csv', names = ("id","timestamp", "value", "property", "plug_id", "household_id", "house_id"), skiprows=start+(batch*it),nrows=batch)
+    myDocs = df.to_dict(orient='records')
+    if myDocs != []:
+        producer.send ("energy", json.dumps({'docs': myDocs}).encode('utf-8'))
+        producer.flush ()   # try to empty the sending buffer
 
 # we are done
-producer.close ()
+producer.close ()                
