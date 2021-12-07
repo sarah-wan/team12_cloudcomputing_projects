@@ -46,7 +46,7 @@ spec:                     # This is the specification
           # number of iterations. For convenience, a run.sh script is provided that you can
           # copy into the running pod, then exec into that pod and execute the script, which
           # will run the same code 20 times. You can change the iterations count in the script.
-          # command: ["tail"]
-          # args: ["-f", "/dev/null"]
-          command: ["$(SPARK_HOME)/bin/spark-submit"]
-          args: ["--master", "spark://spark-master-svc:7077", "--properties-file", "$(SPARK_HOME)/conf/spark-driver.conf", "$(SPARK_HOME)/examples/src/main/python/wordcount.py", "/alice_in_wonderland.txt"] 
+          command: ["tail"]
+          args: ["-f", "/dev/null"]
+          # command: ["$(SPARK_HOME)/bin/spark-submit"]
+          # args: ["--master", "spark://spark-master-svc:7077", "--properties-file", "$(SPARK_HOME)/conf/spark-driver.conf", "$(SPARK_HOME)/examples/src/main/python/wordcount.py", "/alice_in_wonderland.txt"] 

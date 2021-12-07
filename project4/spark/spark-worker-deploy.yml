@@ -24,8 +24,8 @@ spec:                     # This is the specification where we can even put the 
       hostname: spark-worker-host  # we need it to set the SPARK_LOCAL_IP
       containers:
         - name: spark-worker       # used to name container
-          image: my-spark  # this is the image in private registry
-          imagePullPolicy: Never  # This forces the node to pull the image
+          image: 129.114.25.146:5000/my-spark:latest   # this is the image in private registry
+          imagePullPolicy: Always  # This forces the node to pull the image
           ports:            # Spark worker port
             - containerPort: 7078  # worker will use this port instead of random port
             - containerPort: 7079  # used by block manager
